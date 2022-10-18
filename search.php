@@ -1,0 +1,30 @@
+<?php get_header(); ?>
+
+<div id="content">
+	<div class="search-info">
+		<!–use query to display the number of the result and key words. Key word also display by get_search_query()-->
+			
+		<?php
+			$search_query = new WP_Query( 's='.$s.'&showposts=-1' );
+			$search_keyword = wp_specialchars( $s, 1);
+			$search_count = $search_query->post_count;
+			//var_dump( $search_query );
+			printf( __('Search results for <strong>%1$s</strong>. We found <strong>%2$s</strong> articles for you.', 'textdomain'), $search_keyword, $search_count );
+		?>
+	</div>
+	<section id="main-content">
+		<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+			<?php get_template_part( 'content', get_post_format() ); ?>
+		<?php endwhile; ?>
+		<?php tiw_pagination(); ?>
+		<?php else : ?>
+			<?php get_template_part( 'content', 'none' ); ?>
+		<?php endif; ?>
+	</section>
+	<section id="sidebar">
+		<?php get_sidebar(); ?>
+	</section>
+
+</div>
+
+<?php get_footer(); ?>
